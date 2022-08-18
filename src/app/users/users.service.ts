@@ -15,19 +15,20 @@ export class UsersService {
     @InjectConnection() private connection: Connection,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {
-    this.connection.on('connected', async () => {
-      const users = await this.userModel.find();
-      if (users.length === 0) {
-        console.log('Usuário padrão criado.');
-        await this.userModel.create({
-          name: process.env.DB_DEFAULTUSER_NAME,
-          username: process.env.DB_DEFAULTUSER_USERNAME,
-          password: process.env.DB_DEFAULTUSER_PASSWORD,
-          email: process.env.DB_DEFAULTUSER_EMAIL,
-          permission: UserPermissions.Admin,
-        });
-      }
-    });
+    if (this.connection.readyState === 1) {
+      this.userModel.find().then((users) => {
+        if (users.length === 0) {
+          console.log('Usuário padrão criado.');
+          this.userModel.create({
+            name: process.env.DB_DEFAULTUSER_NAME,
+            username: process.env.DB_DEFAULTUSER_USERNAME,
+            password: process.env.DB_DEFAULTUSER_PASSWORD,
+            email: process.env.DB_DEFAULTUSER_EMAIL,
+            permission: UserPermissions.Admin,
+          });
+        }
+      });
+    }
   }
 
   async create(createUserDto: CreateUserDto) {
