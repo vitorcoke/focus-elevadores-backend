@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Document } from 'mongoose';
 
 export type CondominiumMessageDocument = CondominiumMessage & Document;
@@ -7,8 +7,11 @@ export type CondominiumMessageDocument = CondominiumMessage & Document;
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'update_at' } })
 export class CondominiumMessage {
   @ApiProperty()
-  @Prop()
   _id: string;
+
+  @ApiProperty()
+  @Prop()
+  user_id: string;
 
   @ApiProperty()
   @Prop()
@@ -22,31 +25,27 @@ export class CondominiumMessage {
   @Prop()
   name: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
+  @Prop()
+  title: string;
+
+  @ApiPropertyOptional()
+  @Prop()
+  message: string;
+
+  @ApiPropertyOptional()
   @Prop()
   dayweek: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Prop()
-  starttime: string;
+  starttime: Date;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Prop()
-  endtime: string;
+  endtime: Date;
 
-  @ApiProperty()
-  @Prop()
-  duration: string;
-
-  @ApiProperty()
-  @Prop()
-  max_execution_time: string;
-
-  @ApiProperty()
-  @Prop()
-  validity: string;
-
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Prop()
   jpg_file: string;
 }

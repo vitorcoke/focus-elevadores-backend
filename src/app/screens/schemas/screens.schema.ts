@@ -7,8 +7,11 @@ export type ScreensDocument = Screens & Document;
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'update_at' } })
 export class Screens {
   @ApiProperty()
-  @Prop()
   _id: string;
+
+  @ApiProperty()
+  @Prop()
+  user_id: string;
 
   @ApiProperty()
   @Prop()
@@ -17,10 +20,6 @@ export class Screens {
   @ApiProperty()
   @Prop()
   update_at: Date;
-
-  @ApiProperty()
-  @Prop({ required: true, unique: true })
-  token: string;
 
   @ApiProperty()
   @Prop()
@@ -32,11 +31,11 @@ export class Screens {
 
   @ApiProperty()
   @Prop()
-  orientation: string;
+  source_rss?: string[];
 
   @ApiProperty()
   @Prop()
-  source_rss?: string[];
+  banner?: string;
 
   @ApiProperty()
   @Prop()
@@ -44,7 +43,19 @@ export class Screens {
 
   @ApiProperty()
   @Prop()
-  condominium_message: string[];
+  condominium_message: string;
+
+  @ApiProperty()
+  @Prop()
+  condominium_id: string;
+
+  @ApiProperty()
+  @Prop()
+  state: string;
+
+  @ApiProperty()
+  @Prop()
+  city: string;
 }
 
 export const ScreensSchema = SchemaFactory.createForClass(Screens);

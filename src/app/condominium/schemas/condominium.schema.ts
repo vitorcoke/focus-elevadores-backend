@@ -25,6 +25,10 @@ export class Condominium {
 
   @ApiProperty()
   @Prop()
+  cep: string;
+
+  @ApiProperty()
+  @Prop()
   address: string;
 
   @ApiProperty()

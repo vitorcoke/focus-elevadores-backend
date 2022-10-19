@@ -53,7 +53,7 @@ export class CondominiumController {
     type: GenericExceptionSwagger,
   })
   @ApiBearerAuth()
-  @HasPermissions([UserPermissions.Admin, UserPermissions.Client])
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Post()
   async create(@Body() createCondominiumDto: CreateCondominiumDto) {
@@ -81,6 +81,11 @@ export class CondominiumController {
     type: GenericExceptionSwagger,
   })
   @ApiBearerAuth()
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Query('query') query: string, @Request() request: any) {
@@ -105,7 +110,7 @@ export class CondominiumController {
   })
   @ApiParam({ name: 'id', description: 'ID do condominio que será atualizado' })
   @ApiBearerAuth()
-  @HasPermissions([UserPermissions.Admin])
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Patch(':id')
   async update(
@@ -113,6 +118,33 @@ export class CondominiumController {
     @Body() upadteCondominiumDto: UpdateCondominiumDto,
   ) {
     return this.condominiumService.update(id, upadteCondominiumDto);
+  }
+
+  @ApiOperation({ summary: 'Deletar tele de condominio por ID' })
+  @ApiResponse({
+    status: 204,
+    description: 'Tela deletado com sucesso',
+    type: UpdateCondominiumSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Delete(':id/screen/:screenId')
+  async deleteScreen(
+    @Param('id') id: string,
+    @Param('screenId') screenId: string,
+  ) {
+    return this.condominiumService.removeScreensFromCondominium(id, screenId);
   }
 
   @ApiOperation({ summary: 'Deletar um condominio pelo ID' })

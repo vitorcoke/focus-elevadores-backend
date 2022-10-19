@@ -11,6 +11,10 @@ export class CreateCondominiumDto {
   @Length(14, 14)
   cnpj: number;
 
+  @ApiProperty({ description: 'CEP do condominio' })
+  @IsNotEmpty()
+  cep: string;
+
   @ApiProperty({ description: 'Endereço do condominio' })
   @IsNotEmpty()
   address: string;
@@ -19,8 +23,7 @@ export class CreateCondominiumDto {
   @IsNotEmpty()
   district: string;
 
-  @ApiProperty({ description: 'Complemento do condominio' })
-  @IsNotEmpty()
+  @ApiPropertyOptional({ description: 'Complemento do condominio' })
   complement: string;
 
   @ApiProperty({ description: 'Cidade do condominio' })
@@ -32,6 +35,5 @@ export class CreateCondominiumDto {
   state: string;
 
   @ApiPropertyOptional({ description: 'Telas do condominio' })
-  @IsNotEmpty()
   screens: string[];
 }

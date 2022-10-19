@@ -21,11 +21,7 @@ export class CondominiumService {
 
   async create(createCondominiumDto: CreateCondominiumDto) {
     try {
-      const condominium = await this.condominiumModel.create(
-        createCondominiumDto,
-      );
-      if (!condominium) throw new NotFoundException();
-      return condominium;
+      return await this.condominiumModel.create(createCondominiumDto);
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -38,12 +34,31 @@ export class CondominiumService {
         'condominium_id permission',
       );
 
-      if (queryAll && requestUser.permission === UserPermissions.Admin)
+      if (queryAll && requestUser.permission === UserPermissions.Admin) {
         return this.condominiumModel.find();
-      else
-        return this.condominiumModel.find({
-          _id: { $in: requestUser.condominium_id },
-        });
+      }
+
+      return this.condominiumModel.find({
+        _id: { $in: requestUser.condominium_id },
+      });
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async findAllInternal() {
+    try {
+      return this.condominiumModel.find();
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async findOne(id: string) {
+    try {
+      const condominium = await this.condominiumModel.findOne({ _id: id });
+      if (!condominium) throw new NotFoundException();
+      return condominium;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -64,9 +79,28 @@ export class CondominiumService {
     }
   }
 
+  async removeScreensFromCondominium(condominiumId: string, screenId: string) {
+    try {
+      const condominium = await this.findOne(condominiumId);
+      if (!condominium) throw new NotFoundException();
+
+      const screens = condominium.screens.filter(
+        (screen) => screen != screenId,
+      );
+
+      await this.condominiumModel.findOneAndUpdate(
+        { _id: condominiumId },
+        { screens },
+        { new: true },
+      );
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   async remove(id: string) {
     try {
-      const deleteCondominiun = await this.condominiumModel.findOneAndDelete({
+      const deleteCondominiun = await this.condominiumModel.deleteMany({
         _id: id,
       });
       if (!deleteCondominiun) throw new NotFoundException();

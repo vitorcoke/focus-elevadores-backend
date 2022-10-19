@@ -4,6 +4,7 @@ import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
+
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([

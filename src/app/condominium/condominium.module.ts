@@ -14,5 +14,6 @@ import { UsersModule } from '../users/users.module';
   ],
   providers: [CondominiumService],
   controllers: [CondominiumController],
+  exports: [CondominiumService],
 })
 export class CondominiumModule {}

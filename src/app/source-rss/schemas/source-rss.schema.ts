@@ -7,7 +7,6 @@ export type SourceRssDocument = SourceRss & Document;
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'update_at' } })
 export class SourceRss {
   @ApiProperty()
-  @Prop()
   _id: string;
 
   @ApiProperty()
@@ -20,6 +19,10 @@ export class SourceRss {
 
   @ApiProperty()
   @Prop()
+  user_id: string;
+
+  @ApiProperty()
+  @Prop()
   name: string;
 
   @ApiProperty()
@@ -29,6 +32,10 @@ export class SourceRss {
   @ApiProperty()
   @Prop()
   logotipo: string;
+
+  @ApiProperty()
+  @Prop()
+  urlServerRss: string;
 }
 
 export const SourceRssSchema = SchemaFactory.createForClass(SourceRss);

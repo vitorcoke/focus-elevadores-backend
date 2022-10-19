@@ -4,14 +4,14 @@
  * @readonly
  * */
 export enum UserPermissions {
-  /** Permissão de Operador.
+  /** Permissão de Zelador.
    * @type {number}
    * */
-  Operator = 0,
-  /** Permissão de Cliente.
+  Zelador = 0,
+  /** Permissão de Sindico.
    * @type {number}
    * */
-  Client = 1,
+  Sindico = 1,
   /** Permissão de Administrador.
    * @type {number}
    * */

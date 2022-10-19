@@ -1,7 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsIn, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateUserDto {
+  @ApiProperty({ description: 'ID do usuário que criou' })
+  user_id: string;
+
   @ApiProperty({ description: 'Nome real do usuario' })
   @IsNotEmpty()
   name: string;
@@ -18,6 +21,12 @@ export class CreateUserDto {
   @ApiProperty({ description: 'Senha do usuário' })
   @IsNotEmpty()
   password: string;
+
+  @ApiPropertyOptional({ description: 'ID do condomínio' })
+  condominium_id: string[];
+
+  @ApiPropertyOptional({ description: 'ID das telas' })
+  screen_id: string[];
 
   @ApiProperty({ description: 'Permissão do usuário', minimum: 0, maximum: 2 })
   @IsNotEmpty()

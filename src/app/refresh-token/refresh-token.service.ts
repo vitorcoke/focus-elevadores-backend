@@ -54,7 +54,6 @@ export class RefreshTokenService {
       const refreshToken = await this.refreshTokenModel.findOne({
         _id: refreshTokenDto.refreshTokenId,
       });
-
       if (!refreshToken)
         throw new BadRequestException('Refresh token invalido');
 
@@ -66,7 +65,7 @@ export class RefreshTokenService {
         throw new UnauthorizedException('Refresh token expirado');
 
       const refreshTokenOwner = await this.usersService.findOne({
-        _id: refreshToken._id,
+        _id: refreshToken.user_id,
       });
 
       const token = this.jwtService.sign({

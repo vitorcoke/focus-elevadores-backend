@@ -6,12 +6,14 @@ import {
   CondominiumMessageSchema,
 } from './schemas/condominium-message.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: CondominiumMessage.name, schema: CondominiumMessageSchema },
     ]),
+    UsersModule,
   ],
   providers: [CondominiumMessageService],
   controllers: [CondominiumMessageController],

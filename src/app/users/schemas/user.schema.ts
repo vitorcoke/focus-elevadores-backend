@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export type UserDocument = User & Document;
 
@@ -8,6 +8,10 @@ export type UserDocument = User & Document;
 export class User {
   @ApiProperty()
   _id: string;
+
+  @ApiProperty()
+  @Prop()
+  user_id: string;
 
   @ApiProperty()
   created_at: Date;
@@ -20,6 +24,7 @@ export class User {
   name: string;
 
   @ApiProperty()
+  @Prop()
   username: string;
 
   @ApiProperty()
@@ -33,6 +38,10 @@ export class User {
   @ApiProperty()
   @Prop({ default: [] })
   condominium_id: string[];
+
+  @ApiPropertyOptional()
+  @Prop()
+  screen_id: string[];
 
   @ApiProperty()
   @Prop({ required: true })
