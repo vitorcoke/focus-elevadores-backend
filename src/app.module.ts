@@ -28,6 +28,7 @@ import { SchedulesModule } from './schedules/schedules.module';
           username: process.env.DB_USER,
           password: process.env.DB_PASSWORD,
         },
+        authSource: 'admin',
       },
     ),
     ServeStaticModule.forRoot({
