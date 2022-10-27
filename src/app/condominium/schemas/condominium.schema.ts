@@ -21,6 +21,10 @@ export class Condominium {
 
   @ApiProperty()
   @Prop({ required: true, unique: true })
+  condominium_id_imodulo: number;
+
+  @ApiProperty()
+  @Prop({ required: true, unique: true })
   cnpj: number;
 
   @ApiProperty()

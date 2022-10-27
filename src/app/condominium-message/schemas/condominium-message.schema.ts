@@ -48,6 +48,10 @@ export class CondominiumMessage {
   @ApiPropertyOptional()
   @Prop()
   jpg_file: string;
+
+  @ApiPropertyOptional()
+  @Prop()
+  type: string;
 }
 
 export const CondominiumMessageSchema =

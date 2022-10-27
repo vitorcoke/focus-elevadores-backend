@@ -26,4 +26,8 @@ export class CreateCondominiumMessegeDto {
 
   @ApiPropertyOptional({ description: 'Arquivo JPG' })
   jpg_file: string;
+
+  @ApiProperty({ description: 'Tipo da mensagem' })
+  @IsNotEmpty()
+  type: string;
 }

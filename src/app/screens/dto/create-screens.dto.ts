@@ -22,8 +22,8 @@ export class CreateScreensDto {
   @ApiPropertyOptional({ description: 'Anúncios da tela' })
   advertising?: string[];
 
-  @ApiPropertyOptional({ description: 'Mensagem do condomínio' })
-  condominium_message: string;
+  @ApiPropertyOptional({ description: 'Mensagens do condomínio' })
+  condominium_message?: string[];
 
   @ApiProperty({ description: 'ID do condomínio' })
   @IsNotEmpty()
@@ -36,4 +36,8 @@ export class CreateScreensDto {
   @ApiProperty({ description: 'Cidade da tela' })
   @IsNotEmpty()
   city: string;
+
+  @ApiProperty({ description: 'ID imodulo do condominio' })
+  @IsNotEmpty()
+  condominium_id_imodulo: number;
 }

@@ -12,6 +12,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { BannerModule } from './app/banner/banner.module';
 import * as path from 'node:path';
 import { CondominiumMessageModule } from './app/condominium-message/condominium-message.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { SchedulesModule } from './schedules/schedules.module';
 
 @Module({
   imports: [
@@ -21,11 +23,18 @@ import { CondominiumMessageModule } from './app/condominium-message/condominium-
     }),
     MongooseModule.forRoot(
       `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+      {
+        auth: {
+          username: process.env.DB_USER,
+          password: process.env.DB_PASSWORD,
+        },
+      },
     ),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '../rss'),
       serveRoot: '/rss',
     }),
+    ScheduleModule.forRoot(),
     AuthModule,
     UsersModule,
     RefreshTokenModule,
@@ -35,6 +44,7 @@ import { CondominiumMessageModule } from './app/condominium-message/condominium-
     SourceRssModule,
     BannerModule,
     CondominiumMessageModule,
+    SchedulesModule,
   ],
 })
 export class AppModule {}

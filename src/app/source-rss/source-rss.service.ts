@@ -9,6 +9,8 @@ import { Parse } from 'rss-to-json';
 import * as fs from 'node:fs';
 import { UserPermissions } from '../users/enums/user-permissions.enum';
 
+const URL_RSS = process.env.URL_RSS || 'http://localhost';
+
 @Injectable()
 export class SourceRssService {
   constructor(
@@ -38,11 +40,33 @@ export class SourceRssService {
       return await this.sourceRssModel.create({
         ...createSourceRssDto,
         user_id: requestUserId,
-        urlServerRss: `http://192.168.9.130:3333/rss/${nameFile}.json`,
+        urlServerRss: `${URL_RSS}:3333/rss/${nameFile}.json`,
       });
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
+  }
+
+  async createRssJSON(rss: SourceRss[]) {
+    rss.forEach(async (rss) => {
+      const rssFeed = await Parse(rss.url);
+      const nameFile = Date.now();
+
+      fs.writeFile(
+        `rss/${nameFile}.json`,
+        JSON.stringify(rssFeed, null, 2),
+        (err) => {
+          if (err) throw err;
+
+          console.log('The file has been saved!');
+        },
+      );
+
+      await this.sourceRssModel.findOneAndUpdate(
+        { _id: rss._id },
+        { urlServerRss: `${URL_RSS}:3333/rss/${nameFile}.json` },
+      );
+    });
   }
 
   async findAll(requestUserId: string) {
@@ -59,6 +83,19 @@ export class SourceRssService {
       return await this.sourceRssModel.find({
         user_id: { $in: user._id },
       });
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async findAllInternal() {
+    try {
+      const rss = await this.sourceRssModel.find();
+
+      rss.forEach((rss) => {
+        rss.set('logotipo', undefined, { strict: false });
+      });
+      return rss;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }

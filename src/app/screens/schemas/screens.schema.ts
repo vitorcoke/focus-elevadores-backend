@@ -43,7 +43,7 @@ export class Screens {
 
   @ApiProperty()
   @Prop()
-  condominium_message: string;
+  condominium_message?: string[];
 
   @ApiProperty()
   @Prop()
@@ -56,6 +56,10 @@ export class Screens {
   @ApiProperty()
   @Prop()
   city: string;
+
+  @ApiProperty()
+  @Prop()
+  condominium_id_imodulo: number;
 }
 
 export const ScreensSchema = SchemaFactory.createForClass(Screens);

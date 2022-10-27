@@ -6,6 +6,10 @@ export class CreateCondominiumDto {
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty({ description: 'ID do condominio' })
+  @IsNotEmpty()
+  condominium_id_imodulo: number;
+
   @ApiProperty({ description: 'CNPJ do comdomino' })
   @IsNotEmpty()
   @Length(14, 14)

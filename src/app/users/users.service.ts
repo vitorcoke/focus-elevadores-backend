@@ -26,6 +26,7 @@ export class UsersService {
             username: process.env.DB_DEFAULTUSER_USERNAME,
             password: process.env.DB_DEFAULTUSER_PASSWORD,
             email: process.env.DB_DEFAULTUSER_EMAIL,
+            phone: process.env.DB_DEFAULTUSER_PHONE,
             permission: UserPermissions.Admin,
           });
         }

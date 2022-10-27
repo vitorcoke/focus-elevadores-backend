@@ -32,6 +32,10 @@ export class User {
   email: string;
 
   @ApiProperty()
+  @Prop()
+  phone: string;
+
+  @ApiProperty()
   @Prop({ required: true, select: false })
   password: string;
 
