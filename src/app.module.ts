@@ -14,6 +14,7 @@ import * as path from 'node:path';
 import { CondominiumMessageModule } from './app/condominium-message/condominium-message.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SchedulesModule } from './schedules/schedules.module';
+import { ImoduloMessageModule } from './app/imodulo-message/imodulo-message.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { SchedulesModule } from './schedules/schedules.module';
     BannerModule,
     CondominiumMessageModule,
     SchedulesModule,
+    ImoduloMessageModule,
   ],
 })
 export class AppModule {}
