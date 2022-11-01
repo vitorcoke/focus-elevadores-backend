@@ -1,16 +1,20 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BadRequestSwagger } from 'src/helpers/swagger/bad-request.swagger';
 import { GenericExceptionSwagger } from 'src/helpers/swagger/generic-exception.swagger';
 import { AlertBioAccessImoduloMessageDto } from './dto/alert-bio-imodulo-message.dto';
 import { CreateImoduloMessageDto } from './dto/create-imodulo-message.dto';
+import { ImoduloMessageGateway } from './imodulo-message.gateway';
 import { ImoduloMessageService } from './imodulo-message.service';
 import { CreateImoduloMessageSwagger } from './swagger/create-imodulo-message.swagger';
 
 @ApiTags('ImoduloMessage')
 @Controller('imodulo-message')
 export class ImoduloMessageController {
-  constructor(private readonly imoduloMessageService: ImoduloMessageService) {}
+  constructor(
+    private readonly imoduloMessageService: ImoduloMessageService,
+    private readonly imoduloMessageGateway: ImoduloMessageGateway,
+  ) {}
 
   @ApiOperation({ summary: 'Criar nova mensagem' })
   @ApiResponse({
@@ -51,9 +55,10 @@ export class ImoduloMessageController {
   @Post('alert-bio-access')
   async AlertBioAccess(
     @Body() alertBioAccessImoduloMessageDto: AlertBioAccessImoduloMessageDto,
-    @Query('alert') alert: string,
   ) {
-    return console.log('Acesso na biometria');
+    return this.imoduloMessageGateway.handleMessage(
+      alertBioAccessImoduloMessageDto,
+    );
   }
 
   @ApiOperation({ summary: 'Apagar mensagem' })

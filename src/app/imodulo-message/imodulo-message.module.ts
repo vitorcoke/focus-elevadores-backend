@@ -7,7 +7,7 @@ import {
   ImoduloMessageSchema,
 } from './schema/imodulo-message.schema';
 import { IModuleMessageMiddleware } from './middleware/imodule-message.middleware';
-
+import { ImoduloMessageGateway } from './imodulo-message.gateway';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -17,7 +17,7 @@ import { IModuleMessageMiddleware } from './middleware/imodule-message.middlewar
       },
     ]),
   ],
-  providers: [ImoduloMessageService],
+  providers: [ImoduloMessageService, ImoduloMessageGateway],
   controllers: [ImoduloMessageController],
 })
 export class ImoduloMessageModule {
