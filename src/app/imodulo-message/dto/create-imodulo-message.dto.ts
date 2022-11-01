@@ -2,23 +2,23 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateImoduloMessageDto {
   @ApiProperty({ description: 'Condominium ID' })
-  condominiun_id: number;
+  CONDOMINIO: number;
 
   @ApiProperty({ description: 'Unidade' })
-  unity: string;
+  UNIDADE: string;
 
   @ApiProperty({ description: 'Bloco' })
-  block: string;
+  BLOCO: string;
 
   @ApiProperty({ description: 'Tipo' })
-  type: string;
+  TIPO: string;
 
   @ApiProperty({ description: 'Mensagem' })
-  message: string;
+  MENSAGEM: string;
 
   @ApiProperty({ description: 'ID da mensagem' })
-  message_id: string;
+  ID_MENSAGEM: string;
 
   @ApiProperty({ description: 'Data' })
-  date: Date;
+  DATA: Date;
 }

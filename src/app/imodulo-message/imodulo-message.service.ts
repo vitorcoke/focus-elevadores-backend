@@ -16,9 +16,15 @@ export class ImoduloMessageService {
 
   async create(createImoduloMessageDto: CreateImoduloMessageDto) {
     try {
-      const imoduloMessage = await this.imoduloMessageModel.create(
-        createImoduloMessageDto,
-      );
+      const imoduloMessage = await this.imoduloMessageModel.create({
+        condominiun_id: createImoduloMessageDto.CONDOMINIO,
+        unity: createImoduloMessageDto.UNIDADE,
+        block: createImoduloMessageDto.BLOCO,
+        type: createImoduloMessageDto.TIPO,
+        message: createImoduloMessageDto.MENSAGEM,
+        message_id: createImoduloMessageDto.ID_MENSAGEM,
+        date: createImoduloMessageDto.DATA,
+      });
 
       return imoduloMessage;
     } catch (err) {
