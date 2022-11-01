@@ -77,7 +77,8 @@ export class ImoduloMessageController {
     type: GenericExceptionSwagger,
   })
   @Delete()
-  async delete(@Body() { message_id, type }) {
-    return console.log(message_id, type);
+  async delete(@Body() { ID_MENSAGEM, TIPO }) {
+    console.log(ID_MENSAGEM, TIPO);
+    return await this.imoduloMessageService.remove(ID_MENSAGEM, TIPO);
   }
 }

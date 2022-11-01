@@ -41,4 +41,17 @@ export class ImoduloMessageService {
       throw new InternalServerErrorException(err.message);
     }
   }
+
+  async remove(message_id: string, type: string) {
+    try {
+      const imoduloMessage = await this.imoduloMessageModel.findOneAndDelete({
+        message_id,
+        type,
+      });
+
+      return imoduloMessage;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
 }
