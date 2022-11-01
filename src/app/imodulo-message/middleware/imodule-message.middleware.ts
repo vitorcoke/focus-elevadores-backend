@@ -9,6 +9,8 @@ export class IModuleMessageMiddleware implements NestMiddleware {
 
     const validateHash = JSON.stringify(body).length * 34712;
 
+    console.log(body, headers);
+
     if (
       headers.authorization === `Bearer ${process.env.IMODULE_TOKEN}` &&
       headers.HASH === validateHash.toString()
