@@ -35,7 +35,7 @@ import { VmsModule } from './app/vms/vms.module';
     ),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '../rss'),
-      serveRoot: '/api/rss',
+      serveRoot: '/rss',
     }),
     ScheduleModule.forRoot(),
     AuthModule,
