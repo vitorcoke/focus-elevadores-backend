@@ -5,9 +5,9 @@ import { CreateSourceRssDto } from './dto/create-source-rss.dto';
 import { UpdateSourceRssDto } from './dto/update-source-rss.dto';
 import { SourceRss, SourceRssDocument } from './schemas/source-rss.schema';
 import { UsersService } from '../users/users.service';
-import { Parse } from 'rss-to-json';
 import * as fs from 'node:fs';
 import { UserPermissions } from '../users/enums/user-permissions.enum';
+import { Parser } from './utils/convert-xml-to-json';
 
 const URL_RSS = process.env.URL_RSS || 'http://localhost';
 
@@ -25,7 +25,7 @@ export class SourceRssService {
 
   async create(createSourceRssDto: CreateSourceRssDto, requestUserId: string) {
     try {
-      const rssFeed = await Parse(createSourceRssDto.url);
+      const rssFeed = await Parser(createSourceRssDto.url);
       const nameFile = Date.now();
 
       fs.writeFile(
@@ -49,7 +49,7 @@ export class SourceRssService {
 
   async createRssJSON(rss: SourceRss[]) {
     rss.forEach(async (rss) => {
-      const rssFeed = await Parse(rss.url);
+      const rssFeed = await Parser(rss.url);
       const nameFile = Date.now();
 
       fs.writeFile(

@@ -60,6 +60,10 @@ export class Screens {
   @ApiProperty()
   @Prop()
   condominium_id_imodulo: number;
+
+  @ApiProperty()
+  @Prop()
+  vms_camera: string[];
 }
 
 export const ScreensSchema = SchemaFactory.createForClass(Screens);

@@ -40,4 +40,7 @@ export class CreateScreensDto {
   @ApiProperty({ description: 'ID imodulo do condominio' })
   @IsNotEmpty()
   condominium_id_imodulo: number;
+
+  @ApiPropertyOptional({ description: 'Câmeras da tela' })
+  vms_camera?: string[];
 }

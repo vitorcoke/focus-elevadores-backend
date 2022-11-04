@@ -13,13 +13,13 @@ export class ImoduloMessageGateway {
 
   async handleMessage(filter: any) {
     const message = await this.imoduloMessageService.findOne({
-      condominiun_id: filter.condominio,
-      unity: filter.unidade,
-      block: filter.bloco,
+      condominiun_id: filter.condominio_id,
+      unity: filter.unity,
+      block: filter.block,
     });
 
-    if (message) {
-      this.server.emit('alert-bio-access', message);
+    if (message !== null) {
+      return this.server.emit('alert-bio-access', message);
     }
   }
 }
