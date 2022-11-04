@@ -9,8 +9,6 @@ import * as fs from 'node:fs';
 import { UserPermissions } from '../users/enums/user-permissions.enum';
 import { Parser } from './utils/convert-xml-to-json';
 
-const URL_RSS = process.env.URL_RSS || 'http://localhost';
-
 @Injectable()
 export class SourceRssService {
   constructor(
@@ -40,7 +38,7 @@ export class SourceRssService {
       return await this.sourceRssModel.create({
         ...createSourceRssDto,
         user_id: requestUserId,
-        urlServerRss: `${URL_RSS}:3333/rss/${nameFile}.json`,
+        urlServerRss: `${process.env.URL_RSS}:3333/rss/${nameFile}.json`,
       });
     } catch (err) {
       throw new InternalServerErrorException(err.message);
@@ -64,7 +62,7 @@ export class SourceRssService {
 
       await this.sourceRssModel.findOneAndUpdate(
         { _id: rss._id },
-        { urlServerRss: `${URL_RSS}:3333/rss/${nameFile}.json` },
+        { urlServerRss: `${process.env.URL_RSS}:3333/rss/${nameFile}.json` },
       );
     });
   }
