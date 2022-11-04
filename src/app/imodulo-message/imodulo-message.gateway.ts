@@ -21,7 +21,6 @@ export class ImoduloMessageGateway {
     });
 
     if (message !== null) {
-      console.log('foi');
       return this.server.emit('alert-bio-access', message);
     }
   }
