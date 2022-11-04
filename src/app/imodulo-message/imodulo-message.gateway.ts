@@ -4,6 +4,8 @@ import { ImoduloMessageService } from './imodulo-message.service';
 @WebSocketGateway({
   cors: {
     origin: '*',
+    allowedHeaders: '*',
+    methods: '*',
   },
 })
 export class ImoduloMessageGateway {
@@ -19,6 +21,7 @@ export class ImoduloMessageGateway {
     });
 
     if (message !== null) {
+      console.log('foi');
       return this.server.emit('alert-bio-access', message);
     }
   }
