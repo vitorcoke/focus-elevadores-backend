@@ -21,6 +21,10 @@ export class ImoduloMessageGateway {
       block: filter.BLOCO,
     });
 
+    console.log(filter);
+
+    console.log(message);
+
     if (message !== null) {
       return this.server.emit('alert-bio-access', message);
     }
