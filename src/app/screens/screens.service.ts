@@ -163,6 +163,26 @@ export class ScreensService {
     }
   }
 
+  async removeMessagesFromScreen(messageId: string) {
+    try {
+      const screen = await this.screensModel.find({
+        condominium_message: { $in: messageId },
+      });
+
+      if (screen.length > 0) {
+        screen.forEach(async (screen) => {
+          const index = screen.condominium_message.indexOf(messageId);
+          if (index > -1) {
+            screen.condominium_message.splice(index, 1);
+          }
+          await screen.save();
+        });
+      }
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   async remove(id: string) {
     try {
       return await this.screensModel.findByIdAndDelete(id);

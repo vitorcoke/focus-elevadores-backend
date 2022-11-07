@@ -1,4 +1,5 @@
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { AlertBioAccessImoduloMessageDto } from './dto/alert-bio-imodulo-message.dto';
 import { ImoduloMessageService } from './imodulo-message.service';
 
 @WebSocketGateway({
@@ -13,11 +14,11 @@ export class ImoduloMessageGateway {
 
   @WebSocketServer() server;
 
-  async handleMessage(filter: any) {
+  async handleMessage(filter: AlertBioAccessImoduloMessageDto) {
     const message = await this.imoduloMessageService.findOne({
-      condominiun_id: filter.condominio_id,
-      unity: filter.unity,
-      block: filter.block,
+      condominiun_id: filter.CONDOMINIO,
+      unity: filter.UNIDADE,
+      block: filter.BLOCO,
     });
 
     if (message !== null) {

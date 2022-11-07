@@ -25,7 +25,6 @@ import { CreateSourceRssDto } from './dto/create-source-rss.dto';
 import { UpdateSourceRssDto } from './dto/update-source-rss.dto';
 import { SourceRssService } from './source-rss.service';
 import { CreateSourceRssSwagger } from './swagger/create-source-rss.swagger';
-import { Parser } from './utils/convert-xml-to-json';
 
 @ApiTags('SourceRss')
 @Controller('source-rss')
@@ -148,10 +147,5 @@ export class SourceRssController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.sourceRssService.remove(id);
-  }
-
-  @Post('teste')
-  async teste(@Body() body: any) {
-    return Parser(body.url);
   }
 }

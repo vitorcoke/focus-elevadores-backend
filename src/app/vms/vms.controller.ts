@@ -8,7 +8,12 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { HasPermissions } from 'src/auth/decorator/permission.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { BadRequestSwagger } from 'src/helpers/swagger/bad-request.swagger';
@@ -20,6 +25,7 @@ import { CreateVmsSwagger } from './swagger/create-vms.swagger';
 import { UpdateVmsSwagger } from './swagger/update-vms.swagger';
 import { VmsService } from './vms.service';
 
+@ApiTags('Vms')
 @Controller('vms')
 export class VmsController {
   constructor(private readonly vmsService: VmsService) {}

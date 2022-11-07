@@ -2,11 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class AlertBioAccessImoduloMessageDto {
   @ApiProperty({ description: 'ID do condominio' })
-  condominio_id: string;
+  CONDOMINIO: string;
 
   @ApiProperty({ description: 'Unidade do condominio' })
-  unity: string;
+  UNIDADE: string;
 
   @ApiProperty({ description: 'Bloco do condominio' })
-  block: string;
+  BLOCO: string;
 }

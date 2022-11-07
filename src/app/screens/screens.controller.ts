@@ -265,4 +265,28 @@ export class ScreensController {
   async deleteBanner(@Param('id') id: string) {
     return this.screensService.removeBannerFromScreen(id);
   }
+
+  @ApiOperation({ summary: 'Deletar mensagem da tela' })
+  @ApiResponse({
+    status: 202,
+    description: 'Mensagem deletado com sucesso',
+  })
+  @ApiResponse({
+    status: 402,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Delete('/message/:id')
+  async deleteMessage(@Param('id') id: string) {
+    return this.screensService.removeMessagesFromScreen(id);
+  }
 }

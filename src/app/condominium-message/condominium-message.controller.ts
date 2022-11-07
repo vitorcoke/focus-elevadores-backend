@@ -9,7 +9,12 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { HasPermissions } from 'src/auth/decorator/permission.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
@@ -23,6 +28,7 @@ import { CreateCondominiumMessegeSwagger } from './swagger/create-condominium-me
 import { RetrieveCondominumMessegeSwagger } from './swagger/retrieve-condominium-messege.swagger';
 import { UpdateCondominiumMessegeSwagger } from './swagger/update-condominium-messege.swagger';
 
+@ApiTags('CondominiumMessage')
 @Controller('condominium-message')
 export class CondominiumMessageController {
   constructor(
