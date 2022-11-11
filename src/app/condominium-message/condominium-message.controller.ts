@@ -185,4 +185,32 @@ export class CondominiumMessageController {
   async remove(@Param('id') id: string) {
     return this.condominiumMessageService.remove(id);
   }
+
+  @ApiOperation({ summary: 'Deletar tela cadastrada por ID' })
+  @ApiResponse({
+    status: 202,
+    description: 'Tela deletada com sucesso',
+  })
+  @ApiResponse({
+    status: 402,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
+  @Delete('/screen/:id')
+  async removeScreenId(@Param('id') id: string) {
+    return this.condominiumMessageService.removeScreenId(id);
+  }
 }

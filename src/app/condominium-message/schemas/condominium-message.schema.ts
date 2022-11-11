@@ -51,7 +51,7 @@ export class CondominiumMessage {
 
   @ApiPropertyOptional()
   @Prop()
-  type: string;
+  screen_id: string[];
 }
 
 export const CondominiumMessageSchema =

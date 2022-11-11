@@ -98,4 +98,19 @@ export class CondominiumMessageService {
       throw new InternalServerErrorException(err.message);
     }
   }
+
+  async removeScreenId(id: string) {
+    try {
+      const condominiumMessage =
+        await this.CondominiumMessageModel.findOneAndUpdate(
+          { screen_id: { $in: id } },
+          { $pull: { screen_id: id } },
+        );
+
+      if (!condominiumMessage) throw new NotFoundException();
+      return condominiumMessage;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
 }

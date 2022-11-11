@@ -25,7 +25,7 @@ export class Condominium {
 
   @ApiProperty()
   @Prop({ required: true, unique: true })
-  cnpj: number;
+  cnpj: string;
 
   @ApiProperty()
   @Prop()

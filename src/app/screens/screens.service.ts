@@ -90,6 +90,31 @@ export class ScreensService {
     }
   }
 
+  async findCondominiumMessagesScreens(
+    CondominiumMessageId: string,
+    requestUserId: string,
+  ) {
+    try {
+      const user = await this.usersService.findOne({ _id: requestUserId });
+
+      if (
+        user.permission === UserPermissions.Admin ||
+        user.permission === UserPermissions.Sindico
+      ) {
+        return await this.screensModel.find({
+          condominium_message: { $in: CondominiumMessageId },
+        });
+      }
+
+      return await this.screensModel.find({
+        _id: { $in: user.screen_id },
+        condominium_message: { $in: CondominiumMessageId },
+      });
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   findOne(id: string) {
     try {
       return this.screensModel.findById(id);
@@ -104,6 +129,26 @@ export class ScreensService {
         { _id: id },
         {
           ...updateScreensDto,
+        },
+        { new: true },
+      );
+      return updateScreen;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async updateAddCondominiumMessage(id: string, condominiumMessageId: any) {
+    try {
+      const screen = await this.screensModel.findById(id);
+
+      const updateScreen = await this.screensModel.findByIdAndUpdate(
+        { _id: id },
+        {
+          condominium_message: [
+            ...screen.condominium_message,
+            condominiumMessageId.condominium_message,
+          ],
         },
         { new: true },
       );
@@ -165,19 +210,10 @@ export class ScreensService {
 
   async removeMessagesFromScreen(messageId: string) {
     try {
-      const screen = await this.screensModel.find({
-        condominium_message: { $in: messageId },
-      });
-
-      if (screen.length > 0) {
-        screen.forEach(async (screen) => {
-          const index = screen.condominium_message.indexOf(messageId);
-          if (index > -1) {
-            screen.condominium_message.splice(index, 1);
-          }
-          await screen.save();
-        });
-      }
+      return await this.screensModel.updateMany(
+        { condominium_message: { $in: messageId } },
+        { $pull: { condominium_message: messageId } },
+      );
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }

@@ -117,6 +117,42 @@ export class ScreensController {
     );
   }
 
+  @ApiOperation({
+    summary: 'Buscar todas as tela da messagem de condominio informado',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Telas encontradas com sucesso',
+    type: CreateScreensSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Get('/condominiumMessage/:id')
+  async findCondominiumMessagesScreens(
+    @Param('id') condominiumId: string,
+    @Request() req: any,
+  ) {
+    return this.screensService.findCondominiumMessagesScreens(
+      condominiumId,
+      req.user._id,
+    );
+  }
+
   @ApiOperation({ summary: 'Buscar a tela' })
   @ApiResponse({
     status: 201,
@@ -170,6 +206,33 @@ export class ScreensController {
     @Body() updateScreenDto: UpdateScreensDto,
   ) {
     return this.screensService.update(id, updateScreenDto);
+  }
+
+  @ApiOperation({ summary: 'Adicionar mensagem por ID da tela' })
+  @ApiResponse({
+    status: 201,
+    description: 'Telas atualizada com sucesso',
+    type: CreateScreensSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Patch('/message/:id')
+  async updateAddCondominiumMessage(
+    @Param('id') id: string,
+    @Body() updateScreenDto: any,
+  ) {
+    return this.screensService.updateAddCondominiumMessage(id, updateScreenDto);
   }
 
   @ApiOperation({ summary: 'Deletar todas as telas do condominio informado' })

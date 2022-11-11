@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, Length } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateCondominiumDto {
   @ApiProperty({ description: 'Nome do condominio' })
@@ -12,8 +12,7 @@ export class CreateCondominiumDto {
 
   @ApiProperty({ description: 'CNPJ do comdomino' })
   @IsNotEmpty()
-  @Length(14, 14)
-  cnpj: number;
+  cnpj: string;
 
   @ApiProperty({ description: 'CEP do condominio' })
   @IsNotEmpty()
