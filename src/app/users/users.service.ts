@@ -76,6 +76,15 @@ export class UsersService {
     }
   }
 
+  async findAllByCondominiumId(id: string[]) {
+    try {
+      const users = await this.userModel.find({ condominium_id: { $in: id } });
+      return users;
+    } catch (err) {
+      throw new NotFoundException();
+    }
+  }
+
   async findOne(filter: FilterQuery<UserDocument>, select?: string) {
     try {
       const user = await this.userModel.findOne(filter).select(select);

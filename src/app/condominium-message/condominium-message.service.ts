@@ -50,6 +50,19 @@ export class CondominiumMessageService {
         return await this.CondominiumMessageModel.find();
       }
 
+      if (user.permission === UserPermissions.Sindico) {
+        const users = await this.userService.findAllByCondominiumId(
+          user.condominium_id,
+        );
+        const zelador = users.filter(
+          (user) => user.permission === UserPermissions.Zelador,
+        );
+
+        return await this.CondominiumMessageModel.find({
+          user_id: { $in: [...zelador.map((user) => user._id), requestUserId] },
+        });
+      }
+
       return await this.CondominiumMessageModel.find({
         user_id: { $in: user._id },
       });

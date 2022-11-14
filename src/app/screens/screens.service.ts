@@ -62,8 +62,7 @@ export class ScreensService {
           condominium_id: { $in: user.condominium_id },
         });
       }
-
-      return await this.screensModel.find({ user_id: { $in: user._id } });
+      return await this.screensModel.find({ _id: { $in: user.screen_id } });
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
