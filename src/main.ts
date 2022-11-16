@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cors from 'cors';
+import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
 
 const PORT = process.env.PORT_SERVER || 3333;
@@ -10,6 +11,8 @@ const PORT = process.env.PORT_SERVER || 3333;
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cors());
+  app.use(json({ limit: '3000mb' }));
+  app.use(urlencoded({ extended: true, limit: '3000mb' }));
 
   app.useGlobalPipes(new ValidationPipe());
 
