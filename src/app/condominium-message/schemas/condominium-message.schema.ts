@@ -52,6 +52,10 @@ export class CondominiumMessage {
   @ApiPropertyOptional()
   @Prop()
   screen_id: string[];
+
+  @ApiPropertyOptional()
+  @Prop({ default: 15000 })
+  time_exibition: number;
 }
 
 export const CondominiumMessageSchema =

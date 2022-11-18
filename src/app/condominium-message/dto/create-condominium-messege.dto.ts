@@ -29,4 +29,7 @@ export class CreateCondominiumMessegeDto {
 
   @ApiPropertyOptional({ description: 'ID das Telas' })
   screen_id: string[];
+
+  @ApiPropertyOptional({ description: 'Tempo de exibição' })
+  time_exibition: number;
 }
