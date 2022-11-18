@@ -90,6 +90,34 @@ export class SourceRssController {
     return this.sourceRssService.findAll(req.user._id);
   }
 
+  @ApiOperation({ summary: 'Buscar fonte RSS por ID' })
+  @ApiResponse({
+    status: 201,
+    description: 'Fontes RSS encontrada com sucesso',
+    type: CreateSourceRssSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.sourceRssService.findOne(id);
+  }
+
   @ApiOperation({ summary: 'Alterar fonte RSS por ID' })
   @ApiResponse({
     status: 201,
@@ -121,6 +149,37 @@ export class SourceRssController {
     return this.sourceRssService.update(id, updateSourceRssDto);
   }
 
+  @ApiOperation({ summary: 'Adicionar uma tela no rss' })
+  @ApiResponse({
+    status: 201,
+    description: 'Tela adicionada com sucesso',
+    type: CreateSourceRssSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Patch(':id/screen')
+  async updateScreenId(
+    @Param('id') id: string,
+    @Body() screenId: { screen_id: string },
+  ) {
+    return this.sourceRssService.updateScreenId(id, screenId.screen_id);
+  }
+
   @ApiOperation({ summary: 'Deletar fonte RSS por ID' })
   @ApiResponse({
     status: 201,
@@ -147,5 +206,33 @@ export class SourceRssController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.sourceRssService.remove(id);
+  }
+
+  @ApiOperation({ summary: 'Deletar tela cadastrada por ID' })
+  @ApiResponse({
+    status: 202,
+    description: 'Tela deletada com sucesso',
+  })
+  @ApiResponse({
+    status: 402,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
+  @Delete('/screen/:id')
+  async removeScreenId(@Param('id') id: string) {
+    return this.sourceRssService.removeScreenId(id);
   }
 }

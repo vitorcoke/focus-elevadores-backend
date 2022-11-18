@@ -105,6 +105,35 @@ export class UsersController {
     return await this.usersService.findOne({ _id: req.user._id });
   }
 
+  @ApiOperation({ summary: 'Buscar um usuário' })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário encontrado com sucesso',
+    type: RetrieveUserSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro ao buscar usuário',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  async findAllWithoutRestriction() {
+    return await this.usersService.findAllWithoutRestriction();
+  }
+
   @ApiOperation({ summary: 'Alterar usuário por ID' })
   @ApiResponse({
     status: 200,

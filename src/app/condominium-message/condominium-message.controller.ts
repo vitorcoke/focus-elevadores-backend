@@ -162,6 +162,37 @@ export class CondominiumMessageController {
     );
   }
 
+  @ApiOperation({ summary: 'Adicionar uma tela na mensagem de condominio' })
+  @ApiResponse({
+    status: 201,
+    description: 'Tela atualizada com sucesso',
+    type: UpdateCondominiumMessegeSwagger,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
+  @Patch(':id/screen')
+  async updateScreenId(
+    @Body() screenId: { screen_id: string },
+    @Param('id') id: string,
+  ) {
+    return this.condominiumMessageService.updateScreenId(
+      id,
+      screenId.screen_id,
+    );
+  }
+
   @ApiOperation({ summary: 'Deletar mesagem de condominio por ID' })
   @ApiResponse({
     status: 202,

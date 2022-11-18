@@ -114,6 +114,27 @@ export class ScreensService {
     }
   }
 
+  async findSourceRssScreen(sourceRssId: string, requestUserId: string) {
+    try {
+      const user = await this.usersService.findOne({ _id: requestUserId });
+      if (
+        user.permission === UserPermissions.Admin ||
+        user.permission === UserPermissions.Sindico
+      ) {
+        return this.screensModel.find({
+          source_rss: { $in: sourceRssId },
+        });
+      }
+
+      return this.screensModel.find({
+        _id: { $in: user.screen_id },
+        source_rss: { $in: sourceRssId },
+      });
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   findOne(id: string) {
     try {
       return this.screensModel.findById(id);
@@ -157,31 +178,28 @@ export class ScreensService {
     }
   }
 
-  async removeCondominiumScreens(condominiumId: string) {
+  async updateAddSourceRss(id: string, sourceRssId: any) {
     try {
-      return await this.screensModel.deleteMany({
-        condominium_id: { $in: condominiumId },
-      });
+      const screen = await this.screensModel.findById(id);
+
+      const updateScreen = await this.screensModel.findByIdAndUpdate(
+        { _id: id },
+        {
+          source_rss: [...screen.source_rss, sourceRssId.source_rss],
+        },
+        { new: true },
+      );
+      return updateScreen;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
   }
 
-  async removeRssFromScreen(rssId: string) {
+  async removeCondominiumScreens(condominiumId: string) {
     try {
-      const screen = await this.screensModel.find({
-        source_rss: { $in: rssId },
+      return await this.screensModel.deleteMany({
+        condominium_id: { $in: condominiumId },
       });
-
-      if (screen.length > 0) {
-        screen.forEach(async (screen) => {
-          const index = screen.source_rss.indexOf(rssId);
-          if (index > -1) {
-            screen.source_rss.splice(index, 1);
-          }
-          await screen.save();
-        });
-      }
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
@@ -212,6 +230,45 @@ export class ScreensService {
       return await this.screensModel.updateMany(
         { condominium_message: { $in: messageId } },
         { $pull: { condominium_message: messageId } },
+      );
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async removeMessagesFromScreenById(messageId: string, screenId: string) {
+    try {
+      return await this.screensModel.updateOne(
+        {
+          _id: screenId,
+          condominium_message: { $in: messageId },
+        },
+        { $pull: { condominium_message: messageId } },
+      );
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async removeRssFromScreen(rssId: string) {
+    try {
+      return await this.screensModel.updateMany(
+        { source_rss: { $in: rssId } },
+        { $pull: { source_rss: rssId } },
+      );
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async removeRssFromScreenById(rssId: string, screenId: string) {
+    try {
+      return await this.screensModel.updateOne(
+        {
+          _id: screenId,
+          source_rss: { $in: rssId },
+        },
+        { $pull: { source_rss: rssId } },
       );
     } catch (err) {
       throw new InternalServerErrorException(err.message);

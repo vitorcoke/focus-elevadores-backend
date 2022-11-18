@@ -36,6 +36,10 @@ export class SourceRss {
   @ApiProperty()
   @Prop()
   urlServerRss: string;
+
+  @ApiProperty()
+  @Prop({ default: [] })
+  screen_id: string[];
 }
 
 export const SourceRssSchema = SchemaFactory.createForClass(SourceRss);

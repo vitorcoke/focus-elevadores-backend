@@ -89,6 +89,24 @@ export class CondominiumMessageService {
     }
   }
 
+  async updateScreenId(id: string, screen_id: string) {
+    try {
+      const condominiumMessage =
+        await this.CondominiumMessageModel.findOneAndUpdate(
+          {
+            _id: id,
+          },
+          { $push: { screen_id: screen_id } },
+          { new: true },
+        );
+
+      if (!condominiumMessage) throw new NotFoundException();
+      return condominiumMessage;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   async findOne(id: string) {
     try {
       const condominiumMessage = await this.CondominiumMessageModel.findOne({
@@ -120,7 +138,6 @@ export class CondominiumMessageService {
           { $pull: { screen_id: id } },
         );
 
-      if (!condominiumMessage) throw new NotFoundException();
       return condominiumMessage;
     } catch (err) {
       throw new InternalServerErrorException(err.message);

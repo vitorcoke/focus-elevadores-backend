@@ -19,4 +19,7 @@ export class CreateSourceRssDto {
 
   @ApiProperty({ description: 'URL do servidor de RSS' })
   urlServerRss: string;
+
+  @ApiProperty({ description: 'ID das telas' })
+  screen_id: string[];
 }

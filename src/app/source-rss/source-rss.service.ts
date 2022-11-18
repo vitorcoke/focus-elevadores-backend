@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateSourceRssDto } from './dto/create-source-rss.dto';
@@ -99,6 +103,18 @@ export class SourceRssService {
     }
   }
 
+  async findOne(id: string) {
+    try {
+      const rss = await this.sourceRssModel.findOne({
+        _id: id,
+      });
+      if (!rss) throw new NotFoundException();
+      return rss;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   async update(id: string, updateSourceRssDto: UpdateSourceRssDto) {
     try {
       const updateSourceRss = await this.sourceRssModel.findOneAndUpdate(
@@ -112,6 +128,23 @@ export class SourceRssService {
     }
   }
 
+  async updateScreenId(id: string, screen_id: string) {
+    try {
+      const rss = await this.sourceRssModel.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        { $push: { screen_id: screen_id } },
+        { new: true },
+      );
+
+      if (!rss) throw new NotFoundException();
+      return rss;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   async remove(id: string) {
     try {
       const sourceRss = await this.sourceRssModel.findOne({ _id: id });
@@ -119,6 +152,20 @@ export class SourceRssService {
         fs.unlinkSync(`rss/${sourceRss.urlServerRss.split('/').pop()}`);
       }
       return await this.sourceRssModel.findByIdAndDelete(id);
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async removeScreenId(id: string) {
+    try {
+      const sourceRss = await this.sourceRssModel.findOneAndUpdate(
+        { screen_id: { $in: id } },
+        { $pull: { screen_id: id } },
+      );
+
+      if (!sourceRss) throw new NotFoundException();
+      return sourceRss;
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }

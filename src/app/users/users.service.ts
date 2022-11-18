@@ -76,6 +76,15 @@ export class UsersService {
     }
   }
 
+  async findAllWithoutRestriction() {
+    try {
+      const users = await this.userModel.find();
+      return users;
+    } catch (err) {
+      throw new NotFoundException();
+    }
+  }
+
   async findAllByCondominiumId(id: string[]) {
     try {
       const users = await this.userModel.find({ condominium_id: { $in: id } });
