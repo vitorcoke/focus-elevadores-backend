@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 
-export const Parser = async (url: string) => {
+export const Parser = async (url: string, logo?: string) => {
   const { data } = await axios(url);
 
   const xml = new XMLParser({
@@ -23,7 +23,7 @@ export const Parser = async (url: string) => {
       ? channel.image.url
       : channel['itunes:image']
       ? channel['itunes:image'].href
-      : '',
+      : logo,
     category: channel.category || [],
     items: [],
   };

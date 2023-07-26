@@ -27,7 +27,10 @@ export class SourceRssService {
 
   async create(createSourceRssDto: CreateSourceRssDto, requestUserId: string) {
     try {
-      const rssFeed = await Parser(createSourceRssDto.url);
+      const rssFeed = await Parser(
+        createSourceRssDto.url,
+        createSourceRssDto.logotipo,
+      );
       const nameFile = Date.now();
 
       fs.writeFile(
@@ -51,7 +54,7 @@ export class SourceRssService {
 
   async createRssJSON(rss: SourceRss[]) {
     rss.forEach(async (rss) => {
-      const rssFeed = await Parser(rss.url);
+      const rssFeed = await Parser(rss.url, rss.logotipo);
       const nameFile = Date.now();
 
       fs.writeFile(
