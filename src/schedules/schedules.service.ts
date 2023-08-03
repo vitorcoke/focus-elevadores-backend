@@ -7,7 +7,7 @@ import * as fs from 'node:fs';
 export class SchedulesService {
   constructor(private readonly sourceRssService: SourceRssService) {}
 
-  @Cron('0 0 * * 0')
+  @Cron('0 */5 * * *')
   async updateRss() {
     const rss = await this.sourceRssService.findAllInternal();
     if (rss.length > 0) {
