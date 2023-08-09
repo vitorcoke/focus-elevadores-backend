@@ -30,11 +30,22 @@ export class CondominiumMessageService {
       const user = await this.userService.findOne({ _id: requestUserId });
 
       if (!user) throw new NotFoundException('Usuário não encontrado');
-      const condominiumMessage = await this.CondominiumMessageModel.create({
-        ...createCondominiumMessageDto,
-        user_id: requestUserId,
-      });
-      return condominiumMessage;
+
+      if (createCondominiumMessageDto.jpg_file) {
+        const condominiumMessage = await this.CondominiumMessageModel.create({
+          ...createCondominiumMessageDto,
+          user_id: requestUserId,
+          jpg_file: `${process.env.URL_RSS}:3333/image/${createCondominiumMessageDto.jpg_file}`,
+        });
+
+        return condominiumMessage;
+      } else {
+        const condominiumMessage = await this.CondominiumMessageModel.create({
+          ...createCondominiumMessageDto,
+          user_id: requestUserId,
+        });
+        return condominiumMessage;
+      }
     } catch (err) {
       throw new InternalServerErrorException(err.message);
     }

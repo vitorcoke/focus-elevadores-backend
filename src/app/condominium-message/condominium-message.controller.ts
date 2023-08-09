@@ -8,6 +8,8 @@ import {
   Patch,
   Param,
   Delete,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -27,6 +29,10 @@ import { UpdateCondominiumMessegeDto } from './dto/update-condominium-messege.dt
 import { CreateCondominiumMessegeSwagger } from './swagger/create-condominium-messege.swagger';
 import { RetrieveCondominumMessegeSwagger } from './swagger/retrieve-condominium-messege.swagger';
 import { UpdateCondominiumMessegeSwagger } from './swagger/update-condominium-messege.swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import * as path from 'path';
+import { uuid } from 'uuidv4';
 
 @ApiTags('CondominiumMessage')
 @Controller('condominium-message')
@@ -67,6 +73,49 @@ export class CondominiumMessageController {
       createCondominiumMessegeDto,
       req.user._id,
     );
+  }
+
+  @ApiOperation({ summary: 'Salvar imagem da mensagem' })
+  @ApiResponse({
+    status: 201,
+    description: 'Imgagem salva com sucesso',
+    type: CreateCondominiumMessegeSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const filename: string =
+            path.parse(file.originalname).name.replace(/\s/g, '') +
+            uuid().substring(0, 5);
+          const extension: string = path.parse(file.originalname).ext;
+
+          cb(null, `${filename}${extension}`);
+        },
+      }),
+    }),
+  )
+  @Post('/upload')
+  async uploadImg(@UploadedFile() file: Express.Multer.File) {
+    return file.filename;
   }
 
   @ApiOperation({ summary: 'Buscar todas as mensagens de condominio' })
