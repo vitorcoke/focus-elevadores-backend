@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cors from 'cors';
-import { json, urlencoded } from 'express';
+import { NextFunction, Request, Response, json, urlencoded } from 'express';
 import { AppModule } from './app.module';
 
 const PORT = process.env.PORT_SERVER || 3333;
@@ -15,6 +15,13 @@ async function bootstrap() {
   app.use(urlencoded({ extended: true, limit: '3000mb' }));
 
   app.useGlobalPipes(new ValidationPipe());
+
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.originalUrl.endsWith('.jpg') || req.originalUrl.endsWith('.json')) {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+    next();
+  });
 
   app.setGlobalPrefix('api');
 

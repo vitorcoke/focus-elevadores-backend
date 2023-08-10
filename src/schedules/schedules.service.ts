@@ -11,10 +11,14 @@ export class SchedulesService {
   async updateRss() {
     const rss = await this.sourceRssService.findAllInternal();
     if (rss.length > 0) {
-      rss.forEach((rss) => {
+      const rssFilter = rss.filter(
+        (resp) => resp.urlServerRss.split('/').pop() !== '147258.json',
+      );
+
+      rssFilter.forEach((rss) => {
         fs.unlinkSync(`rss/${rss.urlServerRss.split('/').pop()}`);
       });
-      await this.sourceRssService.createRssJSON(rss);
+      await this.sourceRssService.createRssJSON(rssFilter);
     }
   }
 }
