@@ -19,7 +19,7 @@ export const Parser = async (url: string, logo?: string) => {
     title: channel.title ?? '',
     description: channel.description ?? '',
     link: channel.link && channel.link.href ? channel.link.href : channel.link,
-    barra: false,
+    barra: true,
     image: channel.image
       ? channel.image.url
       : channel['itunes:image']
