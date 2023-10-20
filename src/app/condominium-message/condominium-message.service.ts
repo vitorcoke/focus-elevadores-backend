@@ -90,7 +90,10 @@ export class CondominiumMessageService {
       const condominiumMessage =
         await this.CondominiumMessageModel.findOneAndUpdate(
           { _id: id },
-          updateCondominiumMessageDto,
+          {
+            ...updateCondominiumMessageDto,
+            jpg_file: `${process.env.URL_RSS}:3333/image/${updateCondominiumMessageDto.jpg_file}`,
+          },
           { new: true },
         );
       if (!condominiumMessage) throw new NotFoundException();
