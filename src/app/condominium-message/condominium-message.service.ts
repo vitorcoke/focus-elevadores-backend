@@ -87,12 +87,25 @@ export class CondominiumMessageService {
     updateCondominiumMessageDto: UpdateCondominiumMessegeDto,
   ) {
     try {
+      if (updateCondominiumMessageDto.jpg_file) {
+        const condominiumMessage =
+          await this.CondominiumMessageModel.findOneAndUpdate(
+            { _id: id },
+            {
+              ...updateCondominiumMessageDto,
+              jpg_file: `${process.env.ULR_IMG}/api/image/${updateCondominiumMessageDto.jpg_file}`,
+            },
+            { new: true },
+          );
+        if (!condominiumMessage) throw new NotFoundException();
+        return condominiumMessage;
+      }
+
       const condominiumMessage =
         await this.CondominiumMessageModel.findOneAndUpdate(
           { _id: id },
           {
-            ...updateCondominiumMessageDto,
-            jpg_file: `${process.env.ULR_IMG}/api/image/${updateCondominiumMessageDto.jpg_file}`,
+            updateCondominiumMessageDto,
           },
           { new: true },
         );
