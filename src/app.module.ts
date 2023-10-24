@@ -39,7 +39,7 @@ import { VmsModule } from './app/vms/vms.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '../uploads'),
-      serveRoot: '/image',
+      serveRoot: '/api/image',
     }),
     ScheduleModule.forRoot(),
     AuthModule,

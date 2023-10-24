@@ -92,7 +92,7 @@ export class CondominiumMessageService {
           { _id: id },
           {
             ...updateCondominiumMessageDto,
-            jpg_file: `${process.env.URL_RSS}:3333/image/${updateCondominiumMessageDto.jpg_file}`,
+            jpg_file: `${process.env.ULR_IMG}/api/image/${updateCondominiumMessageDto.jpg_file}`,
           },
           { new: true },
         );
