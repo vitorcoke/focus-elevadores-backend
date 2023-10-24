@@ -35,7 +35,7 @@ export class CondominiumMessageService {
         const condominiumMessage = await this.CondominiumMessageModel.create({
           ...createCondominiumMessageDto,
           user_id: requestUserId,
-          jpg_file: `${process.env.URL_RSS}:3333/image/${createCondominiumMessageDto.jpg_file}`,
+          jpg_file: `${process.env.ULR_IMG}/api/image/${createCondominiumMessageDto.jpg_file}`,
         });
 
         return condominiumMessage;
