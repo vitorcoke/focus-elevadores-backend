@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SourceRssService } from 'src/app/source-rss/source-rss.service';
 import { Cron } from '@nestjs/schedule';
 import * as fs from 'node:fs';
@@ -7,7 +7,7 @@ import * as fs from 'node:fs';
 export class SchedulesService {
   constructor(private readonly sourceRssService: SourceRssService) {}
 
-  @Cron('0 */5 * * *')
+  @Cron('* */5 * * *')
   async updateRss() {
     const rss = await this.sourceRssService.findAllInternal();
     if (rss.length > 0) {
@@ -18,6 +18,8 @@ export class SchedulesService {
       rssFilter.forEach((rss) => {
         fs.unlinkSync(`rss/${rss.urlServerRss.split('/').pop()}`);
       });
+
+      Logger.log('Rss atualizado com sucesso', 'SchedulesService');
       await this.sourceRssService.createRssJSON(rssFilter);
     }
   }
