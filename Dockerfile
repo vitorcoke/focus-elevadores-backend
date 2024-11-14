@@ -13,6 +13,8 @@ RUN npm install --force
 # Copiar o código da aplicação NestJS para dentro do container
 COPY . .
 
+RUN npm run build
+
 # Instala o PM2 globalmente
 RUN npm install -g pm2
 
