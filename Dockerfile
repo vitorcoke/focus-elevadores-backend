@@ -1,5 +1,5 @@
 # Etapa 1: Usar uma imagem oficial do Node.js
-FROM node:18.12-alpine AS build
+FROM node:20-bullseye AS build
 
 # Definir o diretório de trabalho dentro do container
 WORKDIR /app/focus-elevador-backend
