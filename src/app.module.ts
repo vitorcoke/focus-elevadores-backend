@@ -34,11 +34,11 @@ import { VmsModule } from './app/vms/vms.module';
       },
     ),
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, 'rss'), // Corrigido para o caminho dentro do contêiner
+      rootPath: path.join(__dirname, '../rss'), // Corrigido para o caminho dentro do contêiner
       serveRoot: '/rss',
     }),
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, 'uploads'), // Corrigido para o caminho dentro do contêiner
+      rootPath: path.join(__dirname, '../uploads'), // Corrigido para o caminho dentro do contêiner
       serveRoot: '/api/image',
     }),
     ScheduleModule.forRoot(),
