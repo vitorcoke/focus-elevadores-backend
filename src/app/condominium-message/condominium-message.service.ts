@@ -88,12 +88,18 @@ export class CondominiumMessageService {
   ) {
     try {
       if (updateCondominiumMessageDto.jpg_file) {
+        const existeHostJPG = updateCondominiumMessageDto.jpg_file.includes(
+          process.env.ULR_IMG,
+        );
+
         const condominiumMessage =
           await this.CondominiumMessageModel.findOneAndUpdate(
             { _id: id },
             {
               ...updateCondominiumMessageDto,
-              jpg_file: `${process.env.ULR_IMG}/api/image/${updateCondominiumMessageDto.jpg_file}`,
+              jpg_file: existeHostJPG
+                ? updateCondominiumMessageDto.jpg_file
+                : `${process.env.ULR_IMG}/api/image/${updateCondominiumMessageDto.jpg_file}`,
             },
             { new: true },
           );
