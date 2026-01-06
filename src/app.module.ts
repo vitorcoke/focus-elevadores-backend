@@ -29,13 +29,11 @@ console.log(
       isGlobal: true,
       envFilePath: '.env',
     }),
-    MongooseModule.forRoot(
-      `${process.env.TYPE_CONNECTION}://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hh1mcab.mongodb.net/?appName=Cluster0`,
-      {
-        dbName: process.env.DB_NAME,
-        authSource: 'admin',
-      },
-    ),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: `${process.env.TYPE_CONNECTION}://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hh1mcab.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+      }),
+    }),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '../rss'), // Corrigido para o caminho dentro do contêiner
       serveRoot: '/rss',
