@@ -18,6 +18,11 @@ import { ImoduloMessageModule } from './app/imodulo-message/imodulo-message.modu
 import { VmsModule } from './app/vms/vms.module';
 import { NoticiesModule } from './app/noticies/noticies.module';
 
+console.log(
+  'Database Connection String:',
+  `${process.env.TYPE_CONNECTION}://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hh1mcab.mongodb.net/?appName=Cluster0`,
+);
+
 @Module({
   imports: [
     ConfigModule.forRoot({
