@@ -25,12 +25,9 @@ import { NoticiesModule } from './app/noticies/noticies.module';
       envFilePath: '.env',
     }),
     MongooseModule.forRoot(
-      `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+      `${process.env.TYPE_CONNECTION}://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hh1mcab.mongodb.net/?appName=Cluster0`,
       {
-        auth: {
-          username: process.env.DB_USER,
-          password: process.env.DB_PASSWORD,
-        },
+        dbName: process.env.DB_NAME,
         authSource: 'admin',
       },
     ),
