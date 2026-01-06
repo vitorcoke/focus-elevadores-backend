@@ -16,6 +16,9 @@ export class CreateScreensDto {
   @ApiPropertyOptional({ description: 'Fonte RSS da tela' })
   source_rss?: string[];
 
+  @ApiPropertyOptional({ description: 'Notícias da tela' })
+  noticies?: string[];
+
   @ApiPropertyOptional({ description: 'Banner da tela' })
   banner?: string;
 

@@ -7,20 +7,20 @@ import * as fs from 'node:fs';
 export class SchedulesService {
   constructor(private readonly sourceRssService: SourceRssService) {}
 
-  @Cron('* */5 * * *')
-  async updateRss() {
-    const rss = await this.sourceRssService.findAllInternal();
-    if (rss.length > 0) {
-      const rssFilter = rss.filter(
-        (resp) => resp.urlServerRss.split('/').pop() !== '147258.json',
-      );
+  // @Cron('* */5 * * *')
+  // async updateRss() {
+  //   const rss = await this.sourceRssService.findAllInternal();
+  //   if (rss.length > 0) {
+  //     const rssFilter = rss.filter(
+  //       (resp) => resp.urlServerRss.split('/').pop() !== '147258.json',
+  //     );
 
-      rssFilter.forEach((rss) => {
-        fs.unlinkSync(`rss/${rss.urlServerRss.split('/').pop()}`);
-      });
+  //     rssFilter.forEach((rss) => {
+  //       fs.unlinkSync(`rss/${rss.urlServerRss.split('/').pop()}`);
+  //     });
 
-      Logger.log('Rss atualizado com sucesso', 'SchedulesService');
-      await this.sourceRssService.createRssJSON(rssFilter);
-    }
-  }
+  //     Logger.log('Rss atualizado com sucesso', 'SchedulesService');
+  //     await this.sourceRssService.createRssJSON(rssFilter);
+  //   }
+  // }
 }

@@ -45,7 +45,7 @@ export class SourceRssService {
       return await this.sourceRssModel.create({
         ...createSourceRssDto,
         user_id: requestUserId,
-        urlServerRss: `${process.env.URL_RSS}:3333/rss/${nameFile}.json`,
+        urlServerRss: `${process.env.URL_RSS}/rss/${nameFile}.json`,
       });
     } catch (err) {
       throw new InternalServerErrorException(err.message);

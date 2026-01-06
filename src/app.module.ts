@@ -16,6 +16,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { SchedulesModule } from './schedules/schedules.module';
 import { ImoduloMessageModule } from './app/imodulo-message/imodulo-message.module';
 import { VmsModule } from './app/vms/vms.module';
+import { NoticiesModule } from './app/noticies/noticies.module';
 
 @Module({
   imports: [
@@ -54,6 +55,8 @@ import { VmsModule } from './app/vms/vms.module';
     SchedulesModule,
     ImoduloMessageModule,
     VmsModule,
+    NoticiesModule,
   ],
+  providers: [],
 })
 export class AppModule {}

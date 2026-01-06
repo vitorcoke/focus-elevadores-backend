@@ -135,6 +135,27 @@ export class ScreensService {
     }
   }
 
+  async findNoticiesScreen(noticiesId: string, requestUserId: string) {
+    try {
+      const user = await this.usersService.findOne({ _id: requestUserId });
+      if (
+        user.permission === UserPermissions.Admin ||
+        user.permission === UserPermissions.Sindico
+      ) {
+        return this.screensModel.find({
+          noticies: { $in: noticiesId },
+        });
+      }
+
+      return this.screensModel.find({
+        _id: { $in: user.screen_id },
+        noticies: { $in: noticiesId },
+      });
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   findOne(id: string) {
     try {
       return this.screensModel.findById(id);
@@ -186,6 +207,23 @@ export class ScreensService {
         { _id: id },
         {
           source_rss: [...screen.source_rss, sourceRssId.source_rss],
+        },
+        { new: true },
+      );
+      return updateScreen;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async updateAddNoticies(id: string, noticieId: any) {
+    try {
+      const screen = await this.screensModel.findById(id);
+
+      const updateScreen = await this.screensModel.findByIdAndUpdate(
+        { _id: id },
+        {
+          noticies: [...screen.noticies, noticieId.noticies],
         },
         { new: true },
       );
@@ -261,6 +299,17 @@ export class ScreensService {
     }
   }
 
+  async removeNoticiesFromScreen(noticiesId: string) {
+    try {
+      return await this.screensModel.updateMany(
+        { noticies: { $in: noticiesId } },
+        { $pull: { noticies: noticiesId } },
+      );
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
   async removeRssFromScreenById(rssId: string, screenId: string) {
     try {
       return await this.screensModel.updateOne(
@@ -269,6 +318,20 @@ export class ScreensService {
           source_rss: { $in: rssId },
         },
         { $pull: { source_rss: rssId } },
+      );
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async removeNoticiesFromScreenById(noticiesId: string, screenId: string) {
+    try {
+      return await this.screensModel.updateOne(
+        {
+          _id: screenId,
+          noticies: { $in: noticiesId },
+        },
+        { $pull: { noticies: noticiesId } },
       );
     } catch (err) {
       throw new InternalServerErrorException(err.message);

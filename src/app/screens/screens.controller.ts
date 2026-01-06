@@ -183,6 +183,39 @@ export class ScreensController {
     return this.screensService.findSourceRssScreen(rssId, req.user._id);
   }
 
+  @ApiOperation({
+    summary: 'Buscar todas as tela da noticia informado',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Telas encontradas com sucesso',
+    type: CreateScreensSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([
+    UserPermissions.Admin,
+    UserPermissions.Sindico,
+    UserPermissions.Zelador,
+  ])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Get('/noticies/:id')
+  async findNoticiesScreen(
+    @Param('id') noticieId: string,
+    @Request() req: any,
+  ) {
+    return this.screensService.findNoticiesScreen(noticieId, req.user._id);
+  }
+
   @ApiOperation({ summary: 'Buscar a tela' })
   @ApiResponse({
     status: 201,
@@ -292,6 +325,33 @@ export class ScreensController {
     return this.screensService.updateAddSourceRss(id, updateScreenDto);
   }
 
+  @ApiOperation({ summary: 'Adicionar Noticia por ID da tela' })
+  @ApiResponse({
+    status: 201,
+    description: 'Telas atualizada com sucesso',
+    type: CreateScreensSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Patch('/noticies/:id')
+  async updateAddNoticies(
+    @Param('id') id: string,
+    @Body() updateScreenDto: any,
+  ) {
+    return this.screensService.updateAddNoticies(id, updateScreenDto);
+  }
+
   @ApiOperation({ summary: 'Deletar todas as telas do condominio informado' })
   @ApiResponse({
     status: 201,
@@ -360,6 +420,29 @@ export class ScreensController {
   @Delete('/rss/:id')
   async deleteRss(@Param('id') id: string) {
     return this.screensService.removeRssFromScreen(id);
+  }
+
+  @ApiOperation({ summary: 'Deletar Noticia da tela' })
+  @ApiResponse({
+    status: 202,
+    description: 'Noticia deletada com sucesso',
+  })
+  @ApiResponse({
+    status: 402,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Delete('/noticies/:id')
+  async deleteNoticies(@Param('id') id: string) {
+    return this.screensService.removeNoticiesFromScreen(id);
   }
 
   @ApiOperation({ summary: 'Deletar banner da tela' })
@@ -465,5 +548,35 @@ export class ScreensController {
     @Param('screenId') screenId: string,
   ) {
     return this.screensService.removeRssFromScreenById(rssId, screenId);
+  }
+
+  @ApiOperation({ summary: 'Deletar Noticia da tela informada' })
+  @ApiResponse({
+    status: 202,
+    description: 'Noticia deletada com sucesso',
+  })
+  @ApiResponse({
+    status: 402,
+    description: 'Requisição mal formatada',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno',
+
+    type: GenericExceptionSwagger,
+  })
+  @ApiBearerAuth()
+  @HasPermissions([UserPermissions.Admin, UserPermissions.Sindico])
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Delete('/noticies/:noticiesId/screen/:screenId')
+  async removeNoticiesFromScreenById(
+    @Param('noticiesId') noticiesId: string,
+    @Param('screenId') screenId: string,
+  ) {
+    return this.screensService.removeNoticiesFromScreenById(
+      noticiesId,
+      screenId,
+    );
   }
 }
